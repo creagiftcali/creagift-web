@@ -118,8 +118,14 @@ const App = () => {
       <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#D19793] flex items-center justify-center text-white font-serif italic text-xl shadow-md font-bold">C</div>
-            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight uppercase">Crea Gift</span>
+            
+            <img 
+              src="/logo-creagift.png" 
+              alt="Crea Gift Logo" 
+              className="w h-15 object-cover"
+              href="inicio"
+            
+            />
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-[10px] font-bold tracking-widest uppercase">
