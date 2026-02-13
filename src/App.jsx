@@ -169,7 +169,7 @@ const App = () => {
               Elevamos tus celebraciones con una curaduría experta en color, texturas y detalles personalizados.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
-              <a href="https://wa.me/tu-numero" className="bg-[#25D366] text-white px-10 py-4 rounded-full font-bold flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all no-underline text-center">
+              <a href="https://wa.me/3155188507" className="bg-[#25D366] text-white px-10 py-4 rounded-full font-bold flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all no-underline text-center">
                 <MessageCircle size={22} /> Agenda tu fecha
               </a>
             </div>
