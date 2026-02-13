@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Tus resets y globals custom */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FCF9F6;  /* tu bg */
+  color: #3A3F3B;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fuentes ya las cargas en <style>, pero puedes reforzar */
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Opcional: si quieres aplicar base a headings */
+@layer base {
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+  }
+}
