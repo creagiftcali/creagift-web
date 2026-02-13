@@ -124,10 +124,15 @@ const App = () => {
           
           <div className="hidden md:flex items-center gap-8 text-[10px] font-bold tracking-widest uppercase">
             {['inicio', 'servicios', 'galeria'].map((link) => (
-              <a key={link} href={`#${link}`} className="nav-link hover:text-[#D19793] text-inherit no-underline">{link}</a>
-            <button 
+              <a key={link} href={`#${link}`} className="nav-link hover:text-[#D19793] text-inherit no-underline">
+                {link}
+              </a>
+            ))}
+
+            <button
               onClick={() => window.open("https://wa.me/3155188507", "_blank")}
-              className="bg-[#3A3F3B] text-white px-8 py-2.5 rounded-full hover:bg-[#D19793] transition-all transform hover:scale-105 border-none cursor-pointer font-bold uppercase text-[10px] tracking-widest">
+              className="bg-[#3A3F3B] text-white px-8 py-2.5 rounded-full hover:bg-[#D19793] transition-all transform hover:scale-105 border-none cursor-pointer font-bold uppercase text-[10px] tracking-widest"
+            >
               Cotizar
             </button>
           </div>
