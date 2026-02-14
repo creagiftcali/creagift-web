@@ -130,7 +130,6 @@ const galleryItems = [
               alt="Crea Gift Logo" 
               className="w h-10  object-cover"
             />
-            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight uppercase">Crea Gift</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-[10px] font-bold tracking-widest uppercase">
