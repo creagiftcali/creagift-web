@@ -29,6 +29,7 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -36,26 +37,26 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const galleryItems = [
+const galleryItems = [
     {
-      url: "https://images.unsplash.com/photo-1530103862676-fa8c91bbe178?auto=format&fit=crop&q=80&w=1200",
-      title: "Celebraciones Orgánicas",
-      category: "Escenografía",
-      description: "Instalaciones de globos con texturas mate y metalizadas que desafían la gravedad."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=1200",
-      title: "Papelería de Autor",
-      category: "Creative Craft",
-      description: "Detalles en papel fino, cortes láser y acabados en foil para una mesa inolvidable."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?auto=format&fit=crop&q=80&w=1200",
-      title: "Mesas de Dulces",
-      category: "Candy Bar",
-      description: "Curaduría de repostería fina integrada perfectamente con la paleta del evento."
-    }
-  ];
+    url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=1200",
+    title: "Celebración Íntima",
+    category: "Eventos Románticos",
+    description: "Ambiente cálido con velas, flores y decoración minimalista para momentos especiales."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&q=80&w=1200",
+    title: "Mesa con Flores",
+    category: "Decoración Premium",
+    description: "Arreglos florales naturales y detalles delicados para mesas inolvidables."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=1200",
+    title: "Globos y Luces",
+    category: "Escenografía Orgánica",
+    description: "Instalaciones de globos y luces suaves para crear atmósfera mágica."
+  }
+];
 
   const handleNext = useCallback(() => {
     setActiveIdx((prev) => (prev + 1) % galleryItems.length);
@@ -65,9 +66,17 @@ const App = () => {
     setActiveIdx((prev) => (prev - 1 + galleryItems.length) % galleryItems.length);
   }, [galleryItems.length]);
 
+  // Auto-play suave para el carrusel (mueve cada 5 segundos)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [handleNext]);
+
   return (
     <div className="min-h-screen w-full overflow-x-hidden font-sans" style={{ backgroundColor: COLORS.bg, color: COLORS.dark }}>
-      {/* Inyección de estilos globales para corregir comportamientos de Vite */}
+      {/* Inyección de estilos globales */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
         
@@ -80,7 +89,6 @@ const App = () => {
         
         html { scroll-behavior: smooth; }
         
-        /* Reset crítico para evitar el centrado de Vite */
         body { 
           margin: 0 !important; 
           padding: 0 !important; 
@@ -94,7 +102,6 @@ const App = () => {
           display: block !important;
         }
 
-        /* Estilo para links de navegación */
         .nav-link {
           position: relative;
           transition: color 0.3s ease;
@@ -118,14 +125,12 @@ const App = () => {
       <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            
             <img 
               src="/logo-creagift.png" 
               alt="Crea Gift Logo" 
-              className="w h-15 object-cover"
-              href="inicio"
-            
+              className="w h-10  object-cover"
             />
+            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight uppercase">Crea Gift</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-[10px] font-bold tracking-widest uppercase">
@@ -196,7 +201,6 @@ const App = () => {
             <div className="aspect-3/4 rounded-t-[12rem] rounded-b-3xl overflow-hidden border-12 border-white shadow-2xl relative z-10">
               <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="Decoración de Eventos" />
             </div>
-            {/* Decoración abstracta */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#F6CEC8] rounded-full blur-3xl opacity-50 z-0"></div>
             <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-full shadow-2xl w-32 h-32 flex flex-col items-center justify-center text-center border-t-4 border-[#D19793] z-20">
                 <Star className="text-[#D19793] fill-[#D19793] mb-1" size={16} />
@@ -236,51 +240,115 @@ const App = () => {
         </div>
       </section>
 
-      {/* Galería Dinámica */}
+      {/* Galería Dinámica - Carrusel interactivo */}
       <section id="galeria" className="py-32 overflow-hidden bg-[#FCF9F6]">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            <div className="lg:col-span-5">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIdx}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="space-y-8"
-                >
-                  <div className="flex items-center gap-3">
-                    <Sparkles size={16} className="text-[#D19793]" />
-                    <span className="text-[#D19793] font-bold text-[11px] uppercase tracking-[0.4em]">{galleryItems[activeIdx].category}</span>
-                  </div>
-                  <h3 className="text-5xl font-serif leading-tight text-[#3A3F3B] m-0">{galleryItems[activeIdx].title}</h3>
-                  <p className="text-lg text-gray-500 font-light leading-relaxed">{galleryItems[activeIdx].description}</p>
-                  <div className="flex gap-4 pt-6">
-                    <button onClick={handlePrev} className="w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all bg-white shadow-sm cursor-pointer"><ChevronLeft size={24} /></button>
-                    <button onClick={handleNext} className="w-14 h-14 rounded-full bg-[#3A3F3B] text-white flex items-center justify-center hover:bg-[#D19793] transition-all shadow-xl cursor-pointer border-none"><ChevronRight size={24} /></button>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-serif mb-4 text-[#3A3F3B]">
+              Galería <span className="italic text-[#D19793]">de momentos</span>
+            </h2>
+            <p className="text-gray-500 font-light max-w-2xl mx-auto">
+              Capturamos la esencia de cada celebración con detalles únicos y elegantes.
+            </p>
+          </div>
+
+          {/* Carrusel */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-4xl">
+              <motion.div
+                className="flex"
+                animate={{ x: `-${activeIdx * 100}%` }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                {galleryItems.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="min-w-full px-4 cursor-pointer"
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ duration: 0.3 }}
+                    onClick={() => setSelectedImage(item.url)}
+                  >
+                    <div className="relative overflow-hidden rounded-4xl border-8 border-white shadow-2xl">
+                      <img
+                        src={item.url}
+                        alt={item.title}
+                        className="w-full h-125 md:h-150 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent flex items-end p-8">
+                        <div className="text-white">
+                          <p className="text-sm uppercase tracking-widest text-[#D19793] mb-2">
+                            {item.category}
+                          </p>
+                          <h3 className="text-2xl md:text-3xl font-serif">{item.title}</h3>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
             </div>
-            
-            <div className="lg:col-span-7 relative h-150 rounded-[4rem] overflow-hidden ... border-8 border-white">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={activeIdx}
-                  src={galleryItems[activeIdx].url}
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="w-full h-full object-cover"
-                />
-              </AnimatePresence>
-              <div className="absolute top-8 right-8 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white text-[10px] font-bold tracking-widest uppercase">
-                {activeIdx + 1} / {galleryItems.length}
-              </div>
-            </div>
+
+            {/* Flechas */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-lg hover:bg-white transition-all z-10"
+            >
+              <ChevronLeft size={28} className="text-[#3A3F3B]" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-lg hover:bg-white transition-all z-10"
+            >
+              <ChevronRight size={28} className="text-[#3A3F3B]" />
+            </button>
+          </div>
+
+          {/* Indicadores */}
+          <div className="flex justify-center gap-3 mt-8">
+            {galleryItems.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIdx(index)}
+                className={`w-3 h-3 rounded-full transition-all ${
+                  index === activeIdx ? 'bg-[#D19793] w-8' : 'bg-gray-300'
+                }`}
+              />
+            ))}
           </div>
         </div>
+
+        {/* Modal para imagen ampliada */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+              onClick={() => setSelectedImage(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                className="relative max-w-5xl w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute -top-12 right-0 text-white text-3xl hover:text-[#D19793] transition-colors"
+                >
+                  <X size={40} />
+                </button>
+                <img
+                  src={selectedImage}
+                  alt="Ampliada"
+                  className="w-full h-auto max-h-[90vh] object-contain rounded-3xl shadow-2xl border-8 border-white"
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       {/* Footer */}
